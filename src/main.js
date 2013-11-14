@@ -24,6 +24,7 @@ function getRandomMessageId() {
 
 function Adapter(configuration, hid) {
     var self = this;
+    var address_list = [];
     
     function sendPacket(data) {
         var writer = new stream.Writer(data.length + 5);
@@ -36,6 +37,31 @@ function Adapter(configuration, hid) {
         hid.write(writer.toArray());
         
         delete writer;
+    }
+
+    function updateAddressList() {
+        var writer = new stream.Writer(address_list.length + 2);
+        writer.writeUInt8(COMMAND_ADDRESS_LIST);
+        writer.writeUInt8(address_list.length);
+        
+        for (var i = 0; i < address_list.length; i++) {
+            writer.writeUInt8(address_list[i]);
+        }
+
+        sendPacket(writer.toArray());
+        delete writer;
+    }
+    
+    function ensureAddressExists(address) {
+        for (var i = 0; i < address_list.length; i++) {
+            if (address_list[i] == address) {
+                return false;
+            }
+        }
+        
+        address_list.push(address);
+        updateAddressList();
+        return true;
     }
     
     function onPacketReceived(packet) {
@@ -52,13 +78,6 @@ function Adapter(configuration, hid) {
                 var source = reader.readUInt8();
                 var command = reader.readUInt8();
                 var data = reader.readBytes(packet.length - 7);
-                
-                console.log("raw usb:", {
-                    command: command,
-                    source: source,
-                    destination: destination,
-                    data: data
-                });
                 
                 self.emit("message", {
                     command: command,
@@ -79,13 +98,12 @@ function Adapter(configuration, hid) {
             }
             else {
                 var reader = new stream.Reader(data);
-                
                 var message_id = reader.readUInt16();
                 var packet_index = reader.readUInt8();
                 var packet_count = reader.readUInt8();
                 var packet = reader.readBytes(reader.readUInt8());
-                onPacketReceived(packet);
                 
+                onPacketReceived(packet);
                 delete reader;
             }
                 
@@ -94,6 +112,8 @@ function Adapter(configuration, hid) {
     }
     
     this.send = function(message) {
+        ensureAddressExists(message.source);
+    
         var writer = new stream.Writer(message.data.length + 19, stream.BIG_ENDIAN);
         
         writer.writeUInt8(COMMAND_DATA);
@@ -110,7 +130,7 @@ function Adapter(configuration, hid) {
         delete writer;
     };
     
-    sendPacket([ COMMAND_ADDRESS_LIST, 1, configuration.address ]);
+    ensureAddressExists(configuration.address);
     receiveNextPacket();
 }
 
