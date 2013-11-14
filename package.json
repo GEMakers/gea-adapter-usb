@@ -1,0 +1,23 @@
+{
+    "name" : "gea-adapter-usb",
+    "description" : "General Electric Appliance adapter for USB communication",
+    "homepage" : "http://www.ge.com/",
+    "keywords" : [
+        "GE",
+        "GEA",
+        "General Electric",
+        "appliance",
+        "USB",
+        "adapter"
+    ],
+    "author" : "Christopher Baker <christopher.baker2@ge.com>",
+    "repository" : {
+        "type": "git", "url": "https://github.com/GEMakers/gea-adapter-usb.git"
+    },
+    "main" : "src/main.js",
+    "version" : "0.0.0",
+    "dependencies": {
+        "node-hid": ">0.2.2"
+    }
+}
+
