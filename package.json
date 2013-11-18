@@ -17,7 +17,8 @@
     "main" : "src/main.js",
     "version" : "0.0.0",
     "dependencies": {
-        "node-hid": ">0.2.2"
+        "node-hid": ">0.2.2",
+        "binary-stream": "git://github.com/GEMakers/binary-stream.git"
     }
 }
 
