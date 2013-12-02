@@ -136,8 +136,6 @@ function Adapter(configuration, hid) {
 
 util.inherits(Adapter, events.EventEmitter);
 
-exports.version = "0.0.0";
-
 exports.bind = function (configuration, callback) {
     var devices = hid.devices(VENDOR_ID, PRODUCT_ID);
 

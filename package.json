@@ -15,7 +15,7 @@
         "type": "git", "url": "https://github.com/GEMakers/gea-adapter-usb.git"
     },
     "main" : "src/main.js",
-    "version" : "0.0.0",
+    "version" : "0.1.0",
     "dependencies": {
         "node-hid": ">0.2.2",
         "binary-stream": "git+https://github.com/GEMakers/binary-stream.git"
