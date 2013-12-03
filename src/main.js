@@ -136,7 +136,6 @@ function Adapter(configuration, hid) {
         delete writer;
     };
     
-    ensureAddressExists(configuration.address);
     receiveNextPacket();
 }
 
