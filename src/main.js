@@ -34,7 +34,13 @@ function Adapter(configuration, hid) {
         writer.writeUInt8(1);
         writer.writeUInt8(data.length);
         writer.writeBytes(data);
-        hid.write(writer.toArray());
+        
+        try {
+            hid.write(writer.toArray());
+        }
+        catch (error) {
+            self.emit("error", error);
+        }
         
         delete writer;
     }
