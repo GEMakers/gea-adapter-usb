@@ -112,7 +112,7 @@ function Adapter(configuration, hid) {
                 onPacketReceived(packet);
                 delete reader;
             }
-                
+
             receiveNextPacket();
         });
     }
