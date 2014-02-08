@@ -3,6 +3,14 @@
 This node.js package provides a USB adapter for the [GEA SDK](https://github.com/GEMakers/gea-sdk).
 Adapters provide the physical transport mechanism for GEA messages.
 
+## UDEV Rules
+
+In order to use the GreenBean Adapter without 'sudo', you must copy the Udev rules to /etc/udev/rules.d/
+
+```
+sudo cp ge-greenbean.rules /etc/udev/rules.d/
+```
+
 ## Adapter interface
 
 Each adapter must implement a common interface in order to be used with the GEA SDK.
