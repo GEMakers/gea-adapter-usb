@@ -86,9 +86,7 @@ function Adapter(configuration, hid) {
     function onPacketReceived(packet) {
         var reader = new stream.Reader(packet);
         var type = reader.readUInt8();
-
-        console.log(packet);
-
+        
         if (type == COMMAND_DATA) {
             var status = reader.readUInt8();
 
