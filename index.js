@@ -41,6 +41,7 @@ function Adapter(configuration, hid) {
 
     function sendPacket(data) {
         var writer = new stream.Writer(data.length + 5);
+        var i=0;
 
         writer.writeUInt16(getRandomMessageId());
         writer.writeUInt8(0);
