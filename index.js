@@ -48,14 +48,22 @@ function Adapter(configuration, hid) {
         writer.writeUInt8(data.length);
         writer.writeBytes(data);
 
-        try {
-            hid.write(writer.toArray());
-        }
-        catch (error) {
-            self.emit("error", error);
-        }
+        function sendIt(writer) {
+           try {
+              hid.write(writer.toArray());
+              delete writer;
+           }
+           catch (error) {
+              i++;
+              if (i<5) {
+                 setTimeout(function(){sendIt(writer);}, 1000);
+              } else {
+                 self.emit("error", error);
+              }
 
-        delete writer;
+           }
+        }
+        sendIt(writer);
     }
 
     function updateAddressList() {
