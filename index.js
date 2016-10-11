@@ -41,6 +41,7 @@ function Adapter(configuration, hid) {
 
     function sendPacket(data) {
         var writer = new stream.Writer(data.length + 5);
+        var i=0;
 
         writer.writeUInt16(getRandomMessageId());
         writer.writeUInt8(0);
@@ -48,14 +49,22 @@ function Adapter(configuration, hid) {
         writer.writeUInt8(data.length);
         writer.writeBytes(data);
 
-        try {
-            hid.write(writer.toArray());
-        }
-        catch (error) {
-            self.emit("error", error);
-        }
+        function sendIt(writer) {
+           try {
+              hid.write(writer.toArray());
+              delete writer;
+           }
+           catch (error) {
+              i++;
+              if (i<5) {
+                 setTimeout(function(){sendIt(writer);}, 1000);
+              } else {
+                 self.emit("error", error);
+              }
 
-        delete writer;
+           }
+        }
+        sendIt(writer);
     }
 
     function updateAddressList() {
