@@ -57,7 +57,7 @@ function Adapter(configuration, hid) {
            catch (error) {
               i++;
               if (i<5) {
-                 setTimeout(function(){sendIt(writer);}, 1000);
+                 setTimeout(function(){sendIt(writer);}, 100);
               } else {
                  self.emit("error", error);
               }
